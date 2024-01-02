@@ -3,9 +3,10 @@
 ▄█ ░█░ █▄▄ █▀█ ██▄ ▀▄▀
 
 Author: <Anton Sychev> (anton at sychev dot xyz) 
-__init__.py (c) 2024 
-Created:  2024-01-02 17:37:05 
-Desc: Inilization of RocketStore
+ack.py (c) 2024 
+Created:  2024-01-03 02:27:39 
+Desc: ACK tool
+Docs: documentation
 """
 
 import re
@@ -25,5 +26,16 @@ class ack:
         use_ansi_colors=True,
         exclude_path=[],
     ):
-        print("ok")
+        print("Clase ack inicializada.")
+        self.regex = regex
+        self.number_processes = number_processes
+        self.search_binary = search_binary
+        self.use_ansi_colors = use_ansi_colors
+        self.exclude_path = exclude_path or []
+
+    def search(self):
+        # Realizar operaciones de búsqueda aquí
         pass
+
+
+

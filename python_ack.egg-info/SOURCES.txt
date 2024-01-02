@@ -1,0 +1,16 @@
+CITATION.cff
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+setup.py
+python_ack.egg-info/PKG-INFO
+python_ack.egg-info/SOURCES.txt
+python_ack.egg-info/dependency_links.txt
+python_ack.egg-info/requires.txt
+python_ack.egg-info/top_level.txt
+src/python_ack/__init__.py
+src/python_ack/__main__.py
+src/python_ack/__version__.py
+src/python_ack/ack.py
+tests/test.py
