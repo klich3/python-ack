@@ -5,7 +5,14 @@ ACK is a code-searching tool, similar to grep but optimized for programmers sear
 ## Local dev
 
 In root folder run `pip install -e .`
-```python
+
+```shell
 cd /tests
 python test.py
+```
+
+## Local cli run
+
+```shell
+python -m python_ack
 ```

@@ -9,10 +9,15 @@ Desc: test file
 Docs: documentation
 """
 
+import os
+import sys
+
 from python_ack.ack import ack
 
 def main():
-    regex = 'your_regex_here'
+    print(os.getcwd())
+
+    regex = 'apple'
     number_processes = 10
     search_binary = False
     use_ansi_colors = True
