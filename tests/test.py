@@ -26,9 +26,13 @@ def main():
         # exclude_paths_regexp=["exclude_*"],
         follow_links=False,
         # use_ansi_colors=False,
+        # search_function=None, #TODO: test
+        # return_as_dict=True,
     )
     instance.process_folders()
-    instance.print_result()
+    result = instance.print_result()
+
+    print(result)
 
     duration = instance.get_duration()
     if duration is not None:

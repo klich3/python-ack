@@ -31,6 +31,7 @@ Sample:
             exclude_paths_regexp=["exclude_*"],
             follow_links=False,
             use_ansi_colors=False
+            return_as_dict=True
         )
         instance.process_folders()
         instance.print_result()
@@ -50,8 +51,6 @@ from queue import Queue
 from threading import Thread
 
 # TODO: return print / return array
-# TODO: ascii colors
-# TODO: exclude text in files
 # TODO : add external callback for vector search
 
 
@@ -69,6 +68,8 @@ class ack:
         follow_links=False,
         exclude_regexp=[],
         use_ansi_colors=True,
+        search_function=None,
+        return_as_dict=False,
     ):
         """
         Primary class for search
@@ -78,6 +79,11 @@ class ack:
         @param num_procesos: number of processes
         @param exclude_paths_regexp: exclude paths by regexp
         @param follow_links: follow sys links on search
+
+        @param use_ansi_colors: use ansi colors in output
+
+        @param search_function: function to search in files
+        @param return_as_dict: return result as dict
         """
         self.path = path
         self.regexp = regexp
@@ -86,6 +92,8 @@ class ack:
         self.exclude_paths_regexp = exclude_paths_regexp
         self.follow_links = follow_links
         self.use_ansi_colors = use_ansi_colors
+        self.search_function = search_function
+        self.return_as_dict = return_as_dict
         self.files = Queue()
 
     @staticmethod
@@ -100,6 +108,11 @@ class ack:
         results = {}
 
         with open(file, "r", errors="ignore") as f:
+            # custom search function
+            # TODO: test
+            if self.search_function is not None:
+                return self.search_function(f)
+
             for i, line in enumerate(f, 1):
                 if any(re.search(excl, line) for excl in self.exclude_regexp):
                     continue
@@ -171,20 +184,35 @@ class ack:
     def print_result(self):
         """
         result print function
+        Sample:
+            instance = ack(
+                return_as_dict=True
+            )
+            result = instance.print_result()
+            print(result)
+            {'/Users/too-off/www_211/python-ack/tests/crw/memories/glOtc6EzYQTZEt0J18cU1f4Ycdz1H8WWTDVkBQTp1Gv2BWgb': {2: '"content": "One fruit: \x1b[43m\x1b[30mapple\x1b[0m",', 20: '"\x1b[43m\x1b[30mapple\x1b[0m alguna frase mas",', 27: '"\x1b[43m\x1b[30mapple\x1b[0m solor",'}, '/Users/too-off/www_211/python-ack/tests/crw/memories/exclude_dir': {2: '"content": "One fruit: \x1b[43m\x1b[30mapple\x1b[0m",'}}
         """
-        for folder, matches in self.results.items():
-            print(
-                ("\033[32m" if self.use_ansi_colors else "")
-                + folder
-                + ("\033[0m" if self.use_ansi_colors else "")
-            )  # Print folder in green
-            for line_number, line in matches:
+        if self.return_as_dict:
+            result_dict = {}
+            for folder, matches in self.results.items():
+                result_dict[folder] = {}
+                for match in matches:
+                    result_dict[folder][match[0]] = match[1]
+            return result_dict
+        else:
+            for folder, matches in self.results.items():
                 print(
-                    ("\033[33m" if self.use_ansi_colors else "")
-                    + str(line_number)
-                    + ("\033[0m: " if self.use_ansi_colors else ": ")
-                    + line
-                )  # Print line number in yellow
+                    ("\033[32m" if self.use_ansi_colors else "")
+                    + folder
+                    + ("\033[0m" if self.use_ansi_colors else "")
+                )  # Print folder in green
+                for line_number, line in matches:
+                    print(
+                        ("\033[33m" if self.use_ansi_colors else "")
+                        + str(line_number)
+                        + ("\033[0m: " if self.use_ansi_colors else ": ")
+                        + line
+                    )  # Print line number in yellow
 
     def get_duration(self):
         """
