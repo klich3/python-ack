@@ -14,23 +14,25 @@ import sys
 
 from python_ack.ack import ack
 
+
 def main():
-    print(os.getcwd())
+    folder = os.path.join(os.getcwd(), "tests", "crw")
 
-    regex = 'apple'
-    number_processes = 10
-    search_binary = False
-    use_ansi_colors = True
-    exclude_path = []  # Puedes proporcionar una lista de exclusiones si es necesario
-
-    my_ack_instance = ack(
-        regex=regex,
-        number_processes=number_processes,
-        search_binary=search_binary,
-        use_ansi_colors=use_ansi_colors,
-        exclude_path=exclude_path,
+    instance = ack(
+        path=folder,
+        regexp="apple",
+        # exclude_regexp=["solor"],
+        num_procesos=10,
+        # exclude_paths_regexp=["exclude_*"],
+        follow_links=False,
     )
-    my_ack_instance.search()  # Llama al método search después de la inicialización
+    instance.process_folders()
+    instance.print_result()
+
+    duration = instance.get_duration()
+    if duration is not None:
+        print(f"\nComplete in {duration}ms.")
+
 
 if __name__ == "__main__":
     main()

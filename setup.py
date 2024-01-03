@@ -17,4 +17,22 @@ setup(
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
     install_requires=[],
+
+    author="Anton Sychev",
+    author_email="anton@sychev.xyz",
+    description="Python-ACK is a code-searching tool, similar to grep but optimized for programmers searching large trees of source code.",
+    license="MIT",
+    url="https://github.com/klich3/python-ack",
+    #py_modules=['python_ack'],
+    #entry_points={'console_scripts': ['python-ack=python_ack.ack:main']},
+    #scripts = [
+    #    'scripts/python-ack'
+    #]
+    classifiers=[
+        'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: MIT License',
+        'Topic :: Software Development :: Libraries :: Python Modules'
+        'Operating System :: Unix',
+        'Topic :: System :: Systems Administration'
+    ]
 )
