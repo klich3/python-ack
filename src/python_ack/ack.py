@@ -6,6 +6,13 @@ Author: <Anton Sychev> (anton at sychev dot xyz)
 ack.py (c) 2024 
 Created:  2024-01-03 02:27:39 
 Desc: ACK tool regexp search tool in folders tree
+Docs: 
+    * ascii color scheme:
+        \033[30m: Black
+        \033[32m: Green
+        \033[33m: Yellow
+        \033[43m: Yellow background
+        \033[0m: Reset color
 Sample:
     import os
     import sys
@@ -23,6 +30,7 @@ Sample:
             num_procesos=10,
             exclude_paths_regexp=["exclude_*"],
             follow_links=False,
+            use_ansi_colors=False
         )
         instance.process_folders()
         instance.print_result()
@@ -60,6 +68,7 @@ class ack:
         exclude_paths_regexp=[],
         follow_links=False,
         exclude_regexp=[],
+        use_ansi_colors=True,
     ):
         """
         Primary class for search
@@ -76,6 +85,7 @@ class ack:
         self.exclude_regexp = exclude_regexp
         self.exclude_paths_regexp = exclude_paths_regexp
         self.follow_links = follow_links
+        self.use_ansi_colors = use_ansi_colors
         self.files = Queue()
 
     @staticmethod
@@ -94,11 +104,21 @@ class ack:
                 if any(re.search(excl, line) for excl in self.exclude_regexp):
                     continue
 
-                if re.search(self.regexp, line):
+                match = re.search(self.regexp, line)
+                if match:
                     folder = os.path.dirname(file)
                     if folder not in results:
                         results[folder] = []
-                    results[folder].append((i, line.strip()))
+                    highlighted = (
+                        line[: match.start()]
+                        + (
+                            ("\033[43m\033[30m" if self.use_ansi_colors else "")
+                            + line[match.start() : match.end()]
+                            + ("\033[0m" if self.use_ansi_colors else "")
+                        )
+                        + line[match.end() :]
+                    )
+                    results[folder].append((i, highlighted.strip()))
         return results
 
     def process_folders(self):
@@ -152,10 +172,19 @@ class ack:
         """
         result print function
         """
-        for folder, results in self.results.items():
-            print(f"Folder: {folder}:")
-            for num_linea, linea in results:
-                print(f"L: {num_linea}: {linea}")
+        for folder, matches in self.results.items():
+            print(
+                ("\033[32m" if self.use_ansi_colors else "")
+                + folder
+                + ("\033[0m" if self.use_ansi_colors else "")
+            )  # Print folder in green
+            for line_number, line in matches:
+                print(
+                    ("\033[33m" if self.use_ansi_colors else "")
+                    + str(line_number)
+                    + ("\033[0m: " if self.use_ansi_colors else ": ")
+                    + line
+                )  # Print line number in yellow
 
     def get_duration(self):
         """

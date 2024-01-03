@@ -25,6 +25,7 @@ def main():
         num_procesos=10,
         # exclude_paths_regexp=["exclude_*"],
         follow_links=False,
+        # use_ansi_colors=False,
     )
     instance.process_folders()
     instance.print_result()
