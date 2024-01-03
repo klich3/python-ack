@@ -2,6 +2,8 @@ Metadata-Version: 2.1
 Name: python-ack
 Version: 0.0.1
 Summary: Using the filesystem as a searchable database.
+Home-page: https://github.com/klich3/python-ack
+Author: Anton Sychev
 Author-email: Anton Sychev <anton@sychev.xyz>
 License: The MIT License (MIT)
         

@@ -27,7 +27,7 @@ Sample:
             path=folder,
             regexp="apple",
             exclude_regexp=["solor"],
-            num_procesos=10,
+            num_processes=10,
             exclude_paths_regexp=["exclude_*"],
             follow_links=False,
             use_ansi_colors=False
@@ -63,7 +63,7 @@ class ack:
         self,
         path,
         regexp,
-        num_procesos=10,
+        num_processes=10,
         exclude_paths_regexp=[],
         follow_links=False,
         exclude_regexp=[],
@@ -76,7 +76,7 @@ class ack:
         @param path: path to search
         @param regexp: regex to search in files
         @param exclude_regexp: exclude text result in files by regexp
-        @param num_procesos: number of processes
+        @param num_processes: number of processes
         @param exclude_paths_regexp: exclude paths by regexp
         @param follow_links: follow sys links on search
 
@@ -87,7 +87,7 @@ class ack:
         """
         self.path = path
         self.regexp = regexp
-        self.num_procesos = num_procesos
+        self.num_processes = num_processes
         self.exclude_regexp = exclude_regexp
         self.exclude_paths_regexp = exclude_paths_regexp
         self.follow_links = follow_links
@@ -154,7 +154,7 @@ class ack:
                 files_queue.task_done()
 
         threads = []
-        for i in range(self.num_procesos):
+        for i in range(self.num_processes):
             t = Thread(target=worker)
             t.start()
             threads.append(t)
@@ -174,7 +174,7 @@ class ack:
         files_queue.join()
 
         # stop workers
-        for i in range(self.num_procesos):
+        for i in range(self.num_processes):
             files_queue.put(None)
         for t in threads:
             t.join()

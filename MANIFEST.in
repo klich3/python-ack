@@ -2,5 +2,6 @@ include LICENSE
 include CITATION.cff
 include README.md
 include *.toml
-recursive-include src/python_ack *.py
+recursive-include src/python_ack/*.py
 prune */__pycache__
+recursive-exclude samples/*.py

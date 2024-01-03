@@ -4,40 +4,37 @@
 
 Author: <Anton Sychev> (anton at sychev dot xyz) 
 test.py (c) 2024 
-Created:  2024-01-03 00:26:05 
-Desc: test file
-Docs: documentation
+Created:  2024-01-04 00:14:32 
+Desc: test cases
 """
 
-import os
-import sys
+# TODO: complete test unit
 
+"""
+import unittest
 from python_ack.ack import ack
 
 
-def main():
-    folder = os.path.join(os.getcwd(), "tests", "crw")
+class TestAck(unittest.TestCase):
+    def setUp(self):
+        self.ack_instance = ack(
+            path=".",
+            regexp="apple",
+            num_processes=4,
+            exclude_paths_regexp=[],
+            follow_links=False,
+            exclude_regexp=["2"],
+            use_ansi_colors=True,
+            return_as_dict=False,
+        )
 
-    instance = ack(
-        path=folder,
-        regexp="apple",
-        # exclude_regexp=["solor"],
-        num_procesos=10,
-        # exclude_paths_regexp=["exclude_*"],
-        follow_links=False,
-        # use_ansi_colors=False,
-        # search_function=None, #TODO: test
-        # return_as_dict=True,
-    )
-    instance.process_folders()
-    result = instance.print_result()
-
-    print(result)
-
-    duration = instance.get_duration()
-    if duration is not None:
-        print(f"\nComplete in {duration}ms.")
+    def test_is_excluded(self):
+        self.assertFalse(self.ack_instance.is_excluded("filename.txt", ["apple"]))
+        # Test when filename matches the regexp
+        self.assertTrue(self.ack_instance.is_excluded("apple_filename.txt", ["apple"]))
 
 
 if __name__ == "__main__":
-    main()
+    unittest.main()
+
+"""

@@ -10,56 +10,25 @@ Desc: Inilization of RocketStore
 
 import sys, os, argparse, re, datetime
 from .ack import ack
+from .__version__ import (
+    __title__,
+    __description__,
+    __url__,
+)
 
-#TODO: complete options
-#TODO: search worker and init
 
 def main():
-    parser = argparse.ArgumentParser(description="ACK search tool")
-    
+    parser = argparse.ArgumentParser(
+        prog="python-ack",
+        description=f"{__description__}",
+        epilog="For more information visit %s" % __url__,
+    )
+
     parser.add_argument(
         "pattern",
         metavar="PATTERN",
         action="store",
-        help="a python re regular expression",
-    )
-
-    if sys.version_info >= (2, 6):
-        parser.add_argument(
-            "--follow-links",
-            "-s",
-            dest="follow_links",
-            action="store_true",
-            default=False,
-            help="follow symlinks (Python >= 2.6 only)",
-        )
-
-    parser.add_argument(
-        "--binary",
-        "-b",
-        dest="search_binary",
-        action="store_true",
-        default=False,
-        help="search binary files",
-    )
-    parser.add_argument(
-        "--no-colors",
-        "-c",
-        dest="use_ansi_colors",
-        action="store_false",
-        default=True,
-        help="don't print ANSI colors",
-    )
-
-    parser.add_argument(
-        "--exclude",
-        "-x",
-        metavar="PATH_PATTERN",
-        dest="exclude_path_patterns",
-        action="append",
-        default=[],
-        type=str,
-        help="exclude paths matching PATH_PATTERN",
+        help="Pattern to search for.",
     )
 
     parser.add_argument(
@@ -67,19 +36,90 @@ def main():
         metavar="DIRECTORY",
         nargs="?",
         default=os.getcwd(),
-        help="a directory to search in (default cwd)",
+        help="A directory to search.",
     )
 
-    flags = 0
-    args = parser.parse_args()
-    pattern = re.escape(args.pattern) if args.escape else args.pattern
+    parser.add_argument(
+        "--num-processes",
+        "-n",
+        dest="num_processes",
+        action="store",
+        default=4,
+        type=int,
+        help="Number of processes to use.",
+    )
 
-    tool = ack(
-            regex=re.compile(pattern, flags),
-            number_processes=args.number_processes,
+    parser.add_argument(
+        "--exclude-path",
+        "-x",
+        metavar="EXCLUDE_PATH_PATTERN",
+        dest="exclude_paths_regexp",
+        action="append",
+        default=[],
+        type=str,
+        help="Exclude paths matching EXCLUDE_PATH_PATTERN.",
+    )
+
+    if sys.version_info >= (2, 6):
+        parser.add_argument(
+            "--follow-links",
+            "-f",
+            dest="follow_links",
+            action="store_true",
+            default=False,
+            help="Follow symlinks (Python >= 2.6 only).",
         )
-    
-    print("\n--", tool)
+
+    parser.add_argument(
+        "--exclude-search",
+        "-s",
+        metavar="EXCLUDE_PATTERN",
+        dest="exclude_regexp",
+        action="append",
+        default=[],
+        type=str,
+        help="Exclude results matching EXCLUDE_PATTERN.",
+    )
+
+    parser.add_argument(
+        "--no-colors",
+        "-c",
+        dest="use_ansi_colors",
+        action="store_false",
+        default=True,
+        help="Don't print ANSI colors like ACK tool.",
+    )
+
+    parser.add_argument(
+        "--statistics",
+        "-t",
+        dest="statistics",
+        action="store_false",
+        default=False,
+        help="On final print excecution statistics.",
+    )
+
+    args = parser.parse_args()
+    args = vars(args)
+
+    statistics = args["statistics"]
+    args["regexp"] = args["pattern"]
+    args["path"] = args["directory"]
+
+    del args["pattern"]
+    del args["directory"]
+    del args["statistics"]
+
+    tool = ack(**args)
+
+    tool.process_folders()
+    tool.print_result()
+
+    if statistics:
+        duration = tool.get_duration()
+        if duration is not None:
+            print(f"\nComplete in {duration}ms.")
+
 
 if __name__ == "__main__":
     main()
