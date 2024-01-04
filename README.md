@@ -135,3 +135,19 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 Make sure to replace "/path/to/search" with your actual path. You can also customize the badges, add more sections, and provide more details based on your project's needs.
+
+
+---
+
+### Publish to Pypi
+
+***Local:***
+```shell
+python -m pip install build twine
+python3 -m build   
+twine check dist/*
+twine upload dist/*
+```
+
+***Live:***
+No need do nothing GitHub have Workflow action its publish auto

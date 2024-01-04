@@ -12,7 +12,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="python-ack",
-    version="0.1",
+    version="0.0.2",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[],
@@ -23,14 +23,12 @@ setup(
     url="https://github.com/klich3/python-ack",
     entry_points={
         "console_scripts": [
-            "python-ack=python_ack.__main__:main",
-        ],
+            "python-ack = python_ack.__main__:main",
+        ]
     },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Topic :: Software Development :: Libraries :: Python Modules"
-        "Operating System :: Unix",
-        "Topic :: System :: Systems Administration",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
 )

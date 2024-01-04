@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: python-ack
-Version: 0.0.1
+Version: 0.0.2
 Summary: Using the filesystem as a searchable database.
 Home-page: https://github.com/klich3/python-ack
 Author: Anton Sychev
@@ -19,7 +19,7 @@ Project-URL: Issues, https://github.com/klich3/python-ack/issues
 Keywords: regexp,file,document,search
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
-Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
 License-File: LICENSE
@@ -164,3 +164,19 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 Make sure to replace "/path/to/search" with your actual path. You can also customize the badges, add more sections, and provide more details based on your project's needs.
+
+
+---
+
+### Publish to Pypi
+
+***Local:***
+```shell
+python -m pip install build twine
+python3 -m build   
+twine check dist/*
+twine upload dist/*
+```
+
+***Live:***
+No need do nothing GitHub have Workflow action its publish auto

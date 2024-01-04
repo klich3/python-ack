@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+#█▀ █▄█ █▀▀ █░█ █▀▀ █░█
+#▄█ ░█░ █▄▄ █▀█ ██▄ ▀▄▀
+#
+#Author: <Anton Sychev> (anton at sychev dot xyz) 
+#python_ack.sh (c) 2024 
+#Created:  2024-01-04 18:13:31 
+#Desc: Shell script to run ack with python files only
+#Documentation: to install in your system, run: ls -s </path/to/python_ack> /usr/local/bin/python-ack
+#
+
+#check if python is installed
+if ! command -v python &> /dev/null
+then
+    echo "<the_command> could not be found"
+    exit 1
+fi
+
+#check if python-ack is installed
+if ! python -c "import python_ack" &> /dev/null; then
+    echo "python-ack is not installed"
+    python -m pip install --user python-ack
+fi
+
+#run python-ack
+python -m python_ack "$@"
