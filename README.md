@@ -26,14 +26,27 @@ ACK is a code-searching tool, similar to grep but optimized for programmers sear
 
 ### Example
 
+***After install you can run it simply writing***
+```shell
+python-ack <params>
+```
+
 ***Search:***
 ```shell
 python -m python_ack "apple" /path/to/search
+
+// or
+
+python-ack "apple" /path/to/search
 ```
 
 ***Help:***
 ```shell
 python -m python_ack --help
+
+// or
+
+python-ack --help
 ```
 
 ```
@@ -77,7 +90,6 @@ The `ack` class in Python-ACK has several attributes that allow you to customize
 - **search_function**: Custom search function to be used for searching in files.
 - **return_as_dict**: Boolean flag indicating whether to return the result as a dictionary.
 
-
 ### Example Usage:
 
 ```python
@@ -110,6 +122,15 @@ if __name__ == "__main__":
 
 ### Local dev
 
+
+Click sections to expand.
+
+<a id="local-dev">
+<details>
+    <summary> Command-line commands </summary>
+
+</a>
+
 In root folder run `pip install -e .`
 
 ```shell
@@ -122,6 +143,8 @@ python test.py
 ```shell
 python -m python_ack
 ```
+
+</details>
 
 ---
 
@@ -141,6 +164,13 @@ Make sure to replace "/path/to/search" with your actual path. You can also custo
 
 ### Publish to Pypi
 
+Click sections to expand.
+
+<a id="publish-to-pypi">
+<details>
+    <summary> Command-line commands </summary>
+</a>
+
 ***Local:***
 ```shell
 python -m pip install build twine
@@ -151,3 +181,11 @@ twine upload dist/*
 
 ***Live:***
 No need do nothing GitHub have Workflow action its publish auto
+
+</details>
+
+---
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=klich3/python-ack&type=Date)](https://star-history.com/#klich3/python-ack&Date)
